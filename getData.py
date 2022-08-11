@@ -31,16 +31,11 @@ json_array = [ {'StateName' : k, 'DistrictMetaData' : parse_json[k]} for k in pa
 # # It will not unwrap the nested JSON objects
 data_frame_array = pd.DataFrame(json_array)
 
-
 # this works with NESTED dict
 df_normalized_fromArray_level1 = pd.json_normalize(json_array, max_level=1) 
 
-
 # Create new DataFrame by filtering out columns from the original DataFrame
 df_filterColumns = df_normalized_fromArray_level1.loc[:,["StateName", "DistrictMetaData.districtData"]]
-
-
-
 
 # Create an array of dicts(objects) with all the district-wise data
 district_array = []
@@ -48,55 +43,10 @@ district_array = []
 # Iterate over all the rows of filtered dataframe
 df_filterColumns = df_filterColumns.reset_index()  # make sure indexes pair with number of rows
 for index, row in df_filterColumns.iterrows():
-    
+
     # Populate array with dict values(objects - key:value pairs)
     district_array +=  [ {'State' : row['StateName'], 'DistrictName' : k, 'CovidData' : row['DistrictMetaData.districtData'][k]} for k in row['DistrictMetaData.districtData']]
     
-
-
-
    
 # create DataFrame from the Array of dicts       
 df_district = pd.json_normalize(district_array)
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#cocktail_list = []
-#api_key = "1"
-#url = 'http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11007'
-
-# for cocktail_id in range (11001, 11006):
-
-# Make this request faster:
-# https://python.plainenglish.io/how-i-decreased-api-response-time-by-89-30-in-python-7057d20f6aef
-    
-#     url = 'http://www.thecocktaildb.com/api/json/v1/1/lookup.php?i={}'.format(cocktail_id)
-    
-    
-#     response = requests.get(url)
-#     #print('status code:' + response.status_code)    
-#     #data = response.text
-#     cocktail_list.append(response.json())
-
-
-
-
-
